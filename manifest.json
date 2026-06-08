@@ -1,0 +1,14 @@
+{
+  "name": "수도권 열섬 예측",
+  "short_name": "열섬예측",
+  "description": "수도권 도시 열섬 현상 실시간 예측 앱",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1923",
+  "theme_color": "#0f1923",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
