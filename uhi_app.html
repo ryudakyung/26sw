@@ -397,15 +397,33 @@ function updateSlider(id, outId, val){
   document.getElementById(outId).textContent = id==='pop' ? Number(val).toLocaleString() : parseFloat(val).toFixed(2);
 }
 
+function estimateFromCoords(lat, lon) {
+  const dist = Math.sqrt((lat - 37.5665) ** 2 + (lon - 126.9780) ** 2);
+  const clamp = (v, mn, mx) => Math.min(Math.max(v, mn), mx);
+  const ndvi       = clamp(0.15 + dist * 1.8,   0.05, 0.85);
+  const buildDens  = clamp(0.80 - dist * 2.5,   0.05, 0.95);
+  const impervSurf = clamp(0.85 - dist * 2.0,   0.10, 0.95);
+  const popDensity = clamp(25000 - dist * 50000, 200,  30000);
+  document.getElementById('ndvi').value   = ndvi.toFixed(2);
+  document.getElementById('build').value  = buildDens.toFixed(2);
+  document.getElementById('imperv').value = impervSurf.toFixed(2);
+  document.getElementById('pop').value    = Math.round(popDensity);
+  document.getElementById('ndviVal').textContent   = ndvi.toFixed(2);
+  document.getElementById('buildVal').textContent  = buildDens.toFixed(2);
+  document.getElementById('impervVal').textContent = impervSurf.toFixed(2);
+  document.getElementById('popVal').textContent    = Math.round(popDensity).toLocaleString();
+}
+
 function getLocation(){
   if(!navigator.geolocation){alert('위치 접근 불가'); return;}
   navigator.geolocation.getCurrentPosition(pos=>{
-    const la = pos.coords.latitude.toFixed(4);
-    const lo = pos.coords.longitude.toFixed(4);
+    const la = parseFloat(pos.coords.latitude.toFixed(4));
+    const lo = parseFloat(pos.coords.longitude.toFixed(4));
     document.getElementById('lat').value = la;
     document.getElementById('lon').value = lo;
-    document.getElementById('latVal').textContent = la;
-    document.getElementById('lonVal').textContent = lo;
+    document.getElementById('latVal').textContent = la.toFixed(4);
+    document.getElementById('lonVal').textContent = lo.toFixed(4);
+    estimateFromCoords(la, lo);
   }, ()=>alert('위치를 가져올 수 없어요.'));
 }
 
